@@ -41,48 +41,122 @@
 </header>
 
 <div class="card">
-    <h2>I. Reglas de Oro</h2>
+    <h2>I. Teoría y Reglas (1-8)</h2>
     <div class="pregunta">
-        <p>1. ¿Qué número puedes modificar legalmente para balancear?</p>
-        <div class="opcion" onclick="validarClick(this, true)">El Coeficiente (número grande a la izquierda)</div>
-        <div class="opcion" onclick="validarClick(this, false)">El Subíndice (número pequeño a la derecha)</div>
+        <p>1. ¿Cómo se llama el número grande que se pone a la izquierda de una fórmula?</p>
+        <div class="opcion" onclick="validarClick(this, true)">Coeficiente Estequiométrico</div>
+        <div class="opcion" onclick="validarClick(this, false)">Subíndice Atómico</div>
     </div>
     <div class="pregunta">
-        <p>2. Según la regla MINOH, ¿en qué orden debes balancear?</p>
-        <div class="opcion" onclick="validarClick(this, true)">Metales -> No Metales -> Oxígeno -> Hidrógeno</div>
-        <div class="opcion" onclick="validarClick(this, false)">Hidrógeno -> Oxígeno -> Metales -> No Metales</div>
+        <p>2. ¿Qué indica el subíndice (número pequeño)?</p>
+        <div class="opcion" onclick="validarClick(this, true)">La cantidad de átomos de ese elemento en la molécula</div>
+        <div class="opcion" onclick="validarClick(this, false)">La cantidad de moléculas totales</div>
+    </div>
+    <div class="pregunta">
+        <p>3. ¿Quién es el padre de la Ley de Conservación de la Masa?</p>
+        <div class="opcion" onclick="validarClick(this, true)">Antoine Lavoisier</div>
+        <div class="opcion" onclick="validarClick(this, false)">John Dalton</div>
+    </div>
+    <div class="pregunta">
+        <p>4. Al balancear, ¿qué es lo único que podemos cambiar?</p>
+        <div class="opcion" onclick="validarClick(this, true)">Los Coeficientes</div>
+        <div class="opcion" onclick="validarClick(this, false)">Los Subíndices</div>
+    </div>
+    <div class="pregunta">
+        <p>5. ¿En qué lado de la flecha se encuentran los "Productos"?</p>
+        <div class="opcion" onclick="validarClick(this, true)">Derecha</div>
+        <div class="opcion" onclick="validarClick(this, false)">Izquierda</div>
+    </div>
+    <div class="pregunta">
+        <p>6. Según el orden MINOH, ¿qué elemento se balancea al final?</p>
+        <div class="opcion" onclick="validarClick(this, true)">Hidrógeno</div>
+        <div class="opcion" onclick="validarClick(this, false)">Metales</div>
+    </div>
+    <div class="pregunta">
+        <p>7. ¿Qué significa la flecha (→) en una ecuación?</p>
+        <div class="opcion" onclick="validarClick(this, true)">Produce o transforma</div>
+        <div class="opcion" onclick="validarClick(this, false)">Es igual a (matemáticamente)</div>
+    </div>
+    <div class="pregunta">
+        <p>8. Si una ecuación no está balanceada, viola la ley de:</p>
+        <div class="opcion" onclick="validarClick(this, true)">Conservación de la materia</div>
+        <div class="opcion" onclick="validarClick(this, false)">Gravedad</div>
     </div>
 </div>
 
 <div class="card">
-    <h2>II. ¡A balancear! (Escribe el número que falta)</h2>
-    
+    <h2>II. Práctica de Tanteo (9-22)</h2>
     <div class="pregunta">
-        <p>3. Balancea el Nitrógeno: __N₂ + 3H₂ → 2NH₃</p>
-        <input type="text" id="p3" placeholder="Coeficiente"> <button onclick="validarTexto('p3', '1')">Revisar</button>
-        <p id="f-p3" class="feedback"></p>
+        <p>9. Balancea: H₂ + Cl₂ → __HCl</p>
+        <input type="text" id="p9"> <button onclick="validarTexto('p9', '2')">Revisar</button>
+        <p id="f-p9" class="feedback"></p>
     </div>
-
     <div class="pregunta">
-        <p>4. Formación de Agua: 2H₂ + O₂ → __H₂O</p>
-        <input type="text" id="p4"> <button onclick="validarTexto('p4', '2')">Revisar</button>
-        <p id="f-p4" class="feedback"></p>
+        <p>10. Balancea: __Mg + O₂ → 2MgO</p>
+        <input type="text" id="p10"> <button onclick="validarTexto('p10', '2')">Revisar</button>
+        <p id="f-p10" class="feedback"></p>
     </div>
-
     <div class="pregunta">
-        <p>5. Combustión Simple: CH₄ + __O₂ → CO₂ + 2H₂O</p>
-        <input type="text" id="p5"> <button onclick="validarTexto('p5', '2')">Revisar</button>
-        <p id="f-p5" class="feedback"></p>
+        <p>11. Balancea: Zn + __HCl → ZnCl₂ + H₂</p>
+        <input type="text" id="p11"> <button onclick="validarTexto('p11', '2')">Revisar</button>
+        <p id="f-p11" class="feedback"></p>
     </div>
-
     <div class="pregunta">
-        <p>6. Si pongo un 3 frente al 3H₂SO₄, ¿cuántos átomos de Hidrógeno tengo en total?</p>
-        <div class="opcion" onclick="validarClick(this, false)">2</div>
-        <div class="opcion" onclick="validarClick(this, false)">6</div>
-        <div class="opcion" onclick="validarClick(this, true)">18</div>
+        <p>12. ¿Cuántos átomos de Oxígeno hay en 3CO₂?</p>
+        <input type="text" id="p12"> <button onclick="validarTexto('p12', '6')">Revisar</button>
+        <p id="f-p12" class="feedback"></p>
+    </div>
+    <div class="pregunta">
+        <p>13. Balancea el Nitrógeno: N₂ + __H₂ → 2NH₃</p>
+        <input type="text" id="p13"> <button onclick="validarTexto('p13', '3')">Revisar</button>
+        <p id="f-p13" class="feedback"></p>
+    </div>
+    <div class="pregunta">
+        <p>14. Balancea el Carbono: __C + O₂ → CO₂</p>
+        <input type="text" id="p14"> <button onclick="validarTexto('p14', '1')">Revisar</button>
+        <p id="f-p14" class="feedback"></p>
+    </div>
+    <div class="pregunta">
+        <p>15. Si tengo 2H₂SO₄, ¿cuántos átomos de Hidrógeno hay?</p>
+        <input type="text" id="p15"> <button onclick="validarTexto('p15', '4')">Revisar</button>
+        <p id="f-p15" class="feedback"></p>
+    </div>
+    <div class="pregunta">
+        <p>16. Balancea: 2KClO₃ → 2KCl + __O₂</p>
+        <input type="text" id="p16"> <button onclick="validarTexto('p16', '3')">Revisar</button>
+        <p id="f-p16" class="feedback"></p>
+    </div>
+    <div class="pregunta">
+        <p>17. Balancea: CH₄ + 2O₂ → CO₂ + __H₂O</p>
+        <input type="text" id="p17"> <button onclick="validarTexto('p17', '2')">Revisar</button>
+        <p id="f-p17" class="feedback"></p>
+    </div>
+    <div class="pregunta">
+        <p>18. ¿Qué coeficiente tiene el O₂ en: 2H₂ + O₂ → 2H₂O?</p>
+        <input type="text" id="p18" placeholder="Si no hay, es 1"> <button onclick="validarTexto('p18', '1')">Revisar</button>
+        <p id="f-p18" class="feedback"></p>
+    </div>
+    <div class="pregunta">
+        <p>19. Balancea el Sodio: __Na + Cl₂ → 2NaCl</p>
+        <input type="text" id="p19"> <button onclick="validarTexto('p19', '2')">Revisar</button>
+        <p id="f-p19" class="feedback"></p>
+    </div>
+    <div class="pregunta">
+        <p>20. En 4H₂O, ¿cuántos átomos de Oxígeno hay?</p>
+        <input type="text" id="p20"> <button onclick="validarTexto('p20', '4')">Revisar</button>
+        <p id="f-p20" class="feedback"></p>
+    </div>
+    <div class="pregunta">
+        <p>21. Balancea: Fe₂O₃ + __C → 2Fe + 3CO</p>
+        <input type="text" id="p21"> <button onclick="validarTexto('p21', '3')">Revisar</button>
+        <p id="f-p21" class="feedback"></p>
+    </div>
+    <div class="pregunta">
+        <p>22. Balancea: __Al + 3Cl₂ → 2AlCl₃</p>
+        <input type="text" id="p22"> <button onclick="validarTexto('p22', '2')">Revisar</button>
+        <p id="f-p22" class="feedback"></p>
     </div>
 </div>
-
 <div id="modalGuia" class="modal">
     <div class="modal-content">
         <span class="close-modal" onclick="cerrarGuia()">&times;</span>
@@ -232,4 +306,5 @@
     window.onclick = function(event) { if (event.target == document.getElementById('modalGuia')) cerrarGuia(); }
 </script>
 </body>
+
 </html>
