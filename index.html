@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master en Balanceo por Tanteo</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 950px; margin: 0 auto; padding: 20px; background-color: #f0fdf4; }
+        header { background: linear-gradient(135deg, #16a085, #27ae60); color: white; padding: 25px; text-align: center; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        h2 { color: #16a085; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0; }
+        .pregunta { margin-bottom: 25px; padding: 15px; border-left: 5px solid #27ae60; background: #f9fffb; border-radius: 0 8px 8px 0; }
+        .opcion { display: block; margin: 10px 0; padding: 12px; background: #fff; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .opcion:hover { background: #d1f2eb; }
+        .correcta { background: #d4edda !important; border-color: #28a745 !important; color: #155724; font-weight: bold; }
+        .incorrecta { background: #f8d7da !important; border-color: #dc3545 !important; color: #721c24; }
+        input[type="text"] { flex-grow: 1; padding: 10px; border: 2px solid #ddd; border-radius: 6px; min-width: 100px; text-align: center; font-weight: bold; }
+        button { background: #16a085; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        
+        .score-float { position: fixed; bottom: 20px; right: 20px; background: #2c3e50; color: white; padding: 15px 25px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 100; font-weight: bold; }
+        .btn-guia { position: fixed; bottom: 20px; left: 20px; background: #27ae60; color: white; padding: 15px 25px; border-radius: 50px; cursor: pointer; z-index: 100; font-weight: bold; border: none; }
+
+        /* Estilos Guía */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); overflow-y: auto; }
+        .modal-content { background-color: #fff; margin: 2% auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 1100px; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 25px; font-size: 35px; font-weight: bold; cursor: pointer; }
+        .grid-guia { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .seccion-ayuda { background: #fdfdfd; padding: 20px; border-radius: 12px; border-top: 6px solid #16a085; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .badge { background: #e67e22; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.9em; }
+        .feedback { margin-top: 8px; font-weight: bold; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="score-float">Aciertos: <span id="puntos">0</span> / 12</div>
+<button class="btn-guia" onclick="abrirGuia()">📖 Guía Paso a Paso</button>
+
+<header>
+    <h1>Aprende Balanceo por Tanteo</h1>
+    <p>¡Suerte mi niña!</p>
+</header>
+
+<div class="card">
+    <h2>I. Reglas de Oro</h2>
+    <div class="pregunta">
+        <p>1. ¿Qué número puedes modificar legalmente para balancear?</p>
+        <div class="opcion" onclick="validarClick(this, true)">El Coeficiente (número grande a la izquierda)</div>
+        <div class="opcion" onclick="validarClick(this, false)">El Subíndice (número pequeño a la derecha)</div>
+    </div>
+    <div class="pregunta">
+        <p>2. Según la regla MINOH, ¿en qué orden debes balancear?</p>
+        <div class="opcion" onclick="validarClick(this, true)">Metales -> No Metales -> Oxígeno -> Hidrógeno</div>
+        <div class="opcion" onclick="validarClick(this, false)">Hidrógeno -> Oxígeno -> Metales -> No Metales</div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>II. ¡A balancear! (Escribe el número que falta)</h2>
+    
+    <div class="pregunta">
+        <p>3. Balancea el Nitrógeno: __N₂ + 3H₂ → 2NH₃</p>
+        <input type="text" id="p3" placeholder="Coeficiente"> <button onclick="validarTexto('p3', '1')">Revisar</button>
+        <p id="f-p3" class="feedback"></p>
+    </div>
+
+    <div class="pregunta">
+        <p>4. Formación de Agua: 2H₂ + O₂ → __H₂O</p>
+        <input type="text" id="p4"> <button onclick="validarTexto('p4', '2')">Revisar</button>
+        <p id="f-p4" class="feedback"></p>
+    </div>
+
+    <div class="pregunta">
+        <p>5. Combustión Simple: CH₄ + __O₂ → CO₂ + 2H₂O</p>
+        <input type="text" id="p5"> <button onclick="validarTexto('p5', '2')">Revisar</button>
+        <p id="f-p5" class="feedback"></p>
+    </div>
+
+    <div class="pregunta">
+        <p>6. Si pongo un 3 frente al 3H₂SO₄, ¿cuántos átomos de Hidrógeno tengo en total?</p>
+        <div class="opcion" onclick="validarClick(this, false)">2</div>
+        <div class="opcion" onclick="validarClick(this, false)">6</div>
+        <div class="opcion" onclick="validarClick(this, true)">18</div>
+    </div>
+</div>
+
+<div id="modalGuia" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="cerrarGuia()">&times;</span>
+        <h1 style="text-align: center; color: #16a085;">👨‍🔬 Manual del Balanceo por Tanteo</h1>
+        <hr>
+        <div class="grid-guia">
+            
+            <div class="seccion-ayuda">
+                <h3>1. ¿Qué es balancear?</h3>
+                <p>Es hacer que la balanza esté igualada. Si entran 4 carbonos, deben salir 4 carbonos.</p>
+                
+                <p><b>Dato clave:</b> La materia no desaparece, solo se reacomoda.</p>
+            </div>
+
+            <div class="seccion-ayuda">
+                <h3>2. La regla del "Número Grande"</h3>
+                <p>El <b>Coeficiente</b> multiplica a TODO el compuesto:</p>
+                <div style="background: #eee; padding: 10px; border-radius: 5px; font-family: monospace;">
+                    <span style="color:red; font-size:1.5em;">3</span>H₂O <br>
+                    H = 3 x 2 = 6 <br>
+                    O = 3 x 1 = 3
+                </div>
+                <p><b style="color:red;">⚠️ NUNCA</b> cambies los numeritos pequeños (subíndices).</p>
+            </div>
+
+            <div class="seccion-ayuda">
+                <h3>3. El Orden Mágico (MINOH)</h3>
+                <p>Si sigues este orden, el balanceo sale solo:</p>
+                <ul>
+                    <li><span class="badge">M</span> <b>Metales:</b> (Na, Mg, Fe, Cu...)</li>
+                    <li><span class="badge">I</span> <b>No Metales:</b> (Cl, S, P, F...)</li>
+                    <li><span class="badge">N</span> <b>No Metales centrales:</b> (C, N...)</li>
+                    <li><span class="badge">O</span> <b>Oxígeno:</b> (Déjalo para el penúltimo)</li>
+                    <li><span class="badge">H</span> <b>Hidrógeno:</b> (Déjalo para el final)</li>
+                </ul>
+            </div>
+
+            <div class="seccion-ayuda">
+                <h3>4. Ejemplo resuelto</h3>
+                <p>Ecuación: Mg + HCl → MgCl₂ + H₂</p>
+                <ol>
+                    <li>Metal (Mg): Hay 1 en cada lado. OK.</li>
+                    <li>No Metal (Cl): Hay 1 a la izq y 2 a la der. Ponemos un <b>2</b> al HCl.</li>
+                    <li>Hidrógeno (H): Al poner el 2, ya tenemos 2 H a la izq y 2 a la der.</li>
+                </ol>
+                <p><b>Resultado:</b> Mg + 2HCl → MgCl₂ + H₂</p>
+                
+            </div>
+            
+            <div class="seccion-ayuda">
+
+                <p>Para balancear, debes identificar estos componentes:</p>
+                <ul>
+                    <li><b>Reactivos:</b> Sustancias iniciales (lado izquierdo).</li>
+                    <li><b>Productos:</b> Sustancias finales (lado derecho).</li>
+                    <li><b>Coeficiente:</b> El número grande (ej. <b>2</b>H₂O). Indica cuántas moléculas hay. <b>¡Es lo único que puedes cambiar!</b></li>
+                    <li><b>Subíndice:</b> El número pequeño (ej. H<b>₂</b>). Indica cuántos átomos de ese elemento hay en la molécula. <b>¡PROHIBIDO TOCAR!</b></li>
+                </ul>
+            </div>
+
+            <div class="seccion-ayuda">
+                <h3>💡 Tips Pro para Tanteo</h3>
+                <ul>
+                    <li><b>Regla MINOH:</b> Balancea en este orden: <b>M</b>etales, <b>I</b>n-metales, <b>N</b>o metales (C, N), <b>O</b>xígeno y al final <b>H</b>idrógeno.</li>
+                    <li><b>Números Pares:</b> Si de un lado tienes un número impar de un elemento (como O₃) y del otro par (O₂), intenta multiplicar el impar por 2 para hacerlo par.</li>
+                    <li><b>Conservación:</b> Recuerda a <b>Lavoisier</b>: "Nada se pierde, todo se transforma".</li>
+                </ul>
+            </div>
+
+            <div class="seccion-ayuda">
+                <h3>⚡ Guía Rápida Redox</h3>
+                
+                <p>Usa esta mnemotecnia para no confundirte:</p>
+                <ul>
+                    <li><b>Oxidación:</b> El número de oxidación <b>sube</b> porque <b>pierde</b> electrones.</li>
+                    <li><b>Reducción:</b> El número de oxidación <b>baja</b> porque <b>gana</b> electrones (los electrones son negativos).</li>
+                    <li><b>Agentes:</b> El que se oxida es el <i>Agente Reductor</i>. El que se reduce es el <i>Agente Oxidante</i>.</li>
+                </ul>
+            </div>
+
+            <div class="seccion-ayuda" style="grid-column: span 2;">
+                <h3>📖 Solucionario y Explicación</h3>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.85em;">
+                    <thead>
+                        <tr style="background: #8e44ad; color: white;">
+                            <th style="padding: 8px; border: 1px solid #ddd;">Pregunta</th>
+                            <th style="padding: 8px; border: 1px solid #ddd;">Respuesta Correcta</th>
+                            <th style="padding: 8px; border: 1px solid #ddd;">¿Por qué?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 5px; border: 1px solid #ddd; text-align: center;">1</td><td style="padding: 5px; border: 1px solid #ddd;">Conservación de la Masa</td><td style="padding: 5px; border: 1px solid #ddd;">La masa total no cambia en una reacción.</td></tr>
+                        <tr><td style="padding: 5px; border: 1px solid #ddd; text-align: center;">2-3</td><td style="padding: 5px; border: 1px solid #ddd;">Coeficientes / Subíndices</td><td style="padding: 5px; border: 1px solid #ddd;">Cambiamos coeficientes para igualar; los subíndices definen la sustancia.</td></tr>
+                        <tr><td style="padding: 5px; border: 1px solid #ddd; text-align: center;">7-10</td><td style="padding: 5px; border: 1px solid #ddd;">Oxidación / Reducción</td><td style="padding: 5px; border: 1px solid #ddd;">Oxidar = Perder e- (sube #). Reducir = Ganar e- (baja #).</td></tr>
+                        <tr><td style="padding: 5px; border: 1px solid #ddd; text-align: center;">11-12</td><td style="padding: 5px; border: 1px solid #ddd;">H (+1) / O (-2)</td><td style="padding: 5px; border: 1px solid #ddd;">Son los valores estándar más comunes en compuestos.</td></tr>
+                        <tr><td style="padding: 5px; border: 1px solid #ddd; text-align: center;">16</td><td style="padding: 5px; border: 1px solid #ddd;">2</td><td style="padding: 5px; border: 1px solid #ddd;">En CH₄ + 2O₂ → CO₂ + <b>2</b>H₂O, hay 4 H de cada lado.</td></tr>
+                        <tr><td style="padding: 5px; border: 1px solid #ddd; text-align: center;">21</td><td style="padding: 5px; border: 1px solid #ddd;">0</td><td style="padding: 5px; border: 1px solid #ddd;">Toda molécula neutra suma cero en sus estados de oxidación.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let aciertos = 0;
+    const contestadas = new Set();
+
+    function abrirGuia() { document.getElementById('modalGuia').style.display = "block"; }
+    function cerrarGuia() { document.getElementById('modalGuia').style.display = "none"; }
+
+    function validarClick(elemento, esCorrecto) {
+        const parent = elemento.parentNode;
+        if (parent.dataset.contestado === "true") return;
+        if(esCorrecto) {
+            elemento.classList.add('correcta');
+            aciertos++;
+            document.getElementById('puntos').innerText = aciertos;
+            parent.dataset.contestado = "true";
+            elemento.innerHTML += " - ✅";
+        } else {
+            elemento.classList.add('incorrecta');
+            setTimeout(() => { elemento.classList.remove('incorrecta'); }, 800);
+        }
+    }
+
+    function validarTexto(id, respuestaCorrecta) {
+        if (contestadas.has(id)) return;
+        let userVal = document.getElementById(id).value.trim();
+        let feedback = document.getElementById('f-' + id);
+        feedback.style.display = "block";
+        
+        if(userVal === respuestaCorrecta) {
+            feedback.innerHTML = "¡Correcto! Balanceado ✅";
+            feedback.style.color = "#27ae60";
+            aciertos++;
+            document.getElementById('puntos').innerText = aciertos;
+            contestadas.add(id);
+            document.getElementById(id).disabled = true;
+        } else {
+            feedback.innerHTML = "Error. Cuenta los átomos otra vez.";
+            feedback.style.color = "#e74c3c";
+        }
+    }
+
+    window.onclick = function(event) { if (event.target == document.getElementById('modalGuia')) cerrarGuia(); }
+</script>
+</body>
+</html>
